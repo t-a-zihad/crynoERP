@@ -2,8 +2,9 @@
 
 @section('pageHeader', 'Print Queue')
 @section('main-section')
-<table class="table table-striped">
-        <thead>
+<div class="table-responsive">
+<table class="table table-bordered table-hover stripe">
+        <thead class="thead-light">
             <tr>
                 <th>Book ID</th>
                 <th>Book Name</th>
@@ -52,5 +53,6 @@
             @endforeach
         </tbody>
     </table>
+</div>
 @endsection
 

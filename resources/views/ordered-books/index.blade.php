@@ -4,7 +4,7 @@
 
 @section('main-section')
 <div class="table-responsive">
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover stripe">
     <thead class="thead-light">
         <tr>
             <th>Date</th>

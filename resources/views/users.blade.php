@@ -14,7 +14,7 @@
 	</div>
 
     <div class="table-responsive">
-        <table class="data-table table stripe hover multiple-select-row data-table-export ">
+        <table class="table table-bordered table-hover  stripe">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">Name</th>

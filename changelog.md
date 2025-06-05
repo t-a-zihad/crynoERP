@@ -1,6 +1,10 @@
 # Changelog
 
 
+## [Unreleased]
+### Fixed
+- Fix Responsive Design for Queue Tables
+
 
 
 ## [1.0.0] - 2025-06-05

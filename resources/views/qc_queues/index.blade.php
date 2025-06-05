@@ -3,7 +3,8 @@
 @section('pageHeader', 'QC Queue')
 
 @section('main-section')
-<table class="table table-bordered table-hover">
+<div class="table-responsive">
+<table class="table table-bordered table-hover  stripe">
     <thead class="thead-light">
         <tr>
             <th>Ordered Book ID</th>
@@ -42,4 +43,5 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection

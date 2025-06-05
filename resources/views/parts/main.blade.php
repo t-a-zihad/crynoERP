@@ -144,12 +144,6 @@
 
         <script>
             $(document).ready(function() {
-                $('table').each(function() {
-                    if (!$(this).parent().hasClass('table-responsive')) {
-                    $(this).wrap('<div class="table-responsive"></div>');
-                    }
-                });
-
                 $('table').DataTable({
                     responsive: false,  // Disable responsive extension (no row collapse)
                     paging: true,
