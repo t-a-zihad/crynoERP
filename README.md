@@ -1,53 +1,113 @@
+# Crynoverse ERP – Version 1
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This is a custom ERP system tailored for Crynoverse’s print-on-demand book operations. It streamlines order tracking, production workflows, quality control, inventory, and packaging, eliminating the inefficiencies of using Excel, Messenger, and ad hoc communication.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚩 Problems This ERP Solves
 
-## Learning Laravel
+- **No centralized tracking**: Orders previously scattered across platforms.
+- **Unclear production stages**: Uncertainty over where books are in the pipeline.
+- **Binding return chaos**: Manual and error-prone matching of bound books to orders.
+- **Forgotten books**: Books stuck in shelves get lost or delayed.
+- **Missed/failed prints**: Issues noticed too late in packaging.
+- **Untracked customizations**: Gifts or special requests hard to monitor.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🧩 Key Features & Modules
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### ✅ Module 1: Order Management
 
-## Laravel Sponsors
+Tracks customer orders and manages each book's production lifecycle:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Master Book Catalog**: Metadata for all books (title, code, price, links).
+- **Customer Orders**: Multi-book order records, delivery details, manager assignment, and status tracking.
+- **Book Items**: Each book is tracked through stages—print, design, binding, QC—with individual statuses.
 
-### Premium Partners
+### 📊 Dashboard View
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Displays a summary table of all orders with:
 
-## Contributing
+- Order status
+- Assigned manager
+- Book count and prices
+- Progress tracking
+- Deep link to item-level views
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🔁 Full Book Production Workflow
 
-## Code of Conduct
+1. **Order Entry**
+2. **Book Printing**
+3. **Cover Design**
+4. **Cover Printing**
+5. **Binding (In/Out)**
+6. **QC (Quality Check)**
+7. **Packaging & Dispatch**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Each phase includes manual or semi-automated status transitions and auto-updates order progress in real-time.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🔒 Role-Based Access (To Be Finalized)
+
+| Role          | Create | Edit | View | Assign | Cost View |
+|---------------|--------|------|------|--------|-----------|
+| Admin         | ✔      | ✔    | ✔    | ✔      | ✔         |
+| Order Manager | ✔      | ✔    | ✔    | ✔      | ✔         |
+| Print Team    | ✖      | ✖    | ✔    | ✖      | ✖         |
+| Design Team   | ✖      | ✖    | ✔    | ✖      | ✖         |
+
+---
+
+## 🔮 Planned Features & Adaptability
+
+| Feature                            | Description                                                                 | Complexity |
+|-----------------------------------|-----------------------------------------------------------------------------|------------|
+| Sorting on all pages              | By date, status, and custom periods                                        | Easy       |
+| Bulk update of status             | Change status of multiple books at once                                    | Easy       |
+| Export to DOCX/CSV                | Export filtered lists (e.g., Binding Out List, employee task logs)         | Easy       |
+| Audit trail per book              | Logs of all updates with timestamps and user info                          | Easy       |
+| Defect/Reject Management          | Alerts and flagging for issues at any stage                                | Medium     |
+| Dashboard Overview                | Metrics like active orders, inventory, QC queue (count & amount)           | Medium     |
+| Custom Dept. Tasks                | Assign issue-specific notes (e.g., damaged cover) with visibility options  | Medium     |
+| Inventory Integration             | Automatically match inventory to order fulfillment                         | Medium     |
+| Accounting Module                 | (Planned, details TBD)                                                     | TBD        |
+
+---
+
+## 👩‍💼 User Info & Authentication
+
+Site users (employees) have:
+
+- Unique ID
+- Name, email, contact number
+- Role-based access
+- Job logs and task tracking
+
+---
+
+## 🛠️ Next Updates
+
+- Enhanced order update features
+- Centralized "All Book Status" page
+- Pagination in views
+- Employee info edit
+- Foreign key relationships in DB schema
+
+---
+
+## 📦 Technologies Suggested
+
+- Backend: Laravel / Node.js
+- Frontend: Vue.js / React
+- Database: MySQL / PostgreSQL
+- Authentication: Role-based middleware
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Internal use only — proprietary to Crynoverse. Redistribution or commercial use is prohibited without permission.
