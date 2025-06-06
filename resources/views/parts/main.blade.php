@@ -46,6 +46,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('src/plugins/datatables/css/dataTables.bootstrap4.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('src/plugins/datatables/css/responsive.bootstrap4.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('vendors/styles/custom-styles.css') }}" />
 
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script

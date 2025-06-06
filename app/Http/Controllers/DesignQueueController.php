@@ -41,7 +41,7 @@ class DesignQueueController extends Controller
     $designQueue->status = $request->status;
     $designQueue->save();
 
-    if ($designQueue->status === 'Done') {
+    if ($designQueue->status === 'Done' || $designQueue->status === 'Pre-designed') {
         $employeeId = session('employee_id'); // Or Auth::id() if you use Auth
 
         // Prevent duplicate CoverPrintingQueue entries

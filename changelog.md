@@ -2,9 +2,12 @@
 
 
 ## [Unreleased]
+### Added
+- Add Different Color according to Status
+
 ### Fixed
 - Fix Responsive Design for Queue Tables
-
+- Fix Pre Designed Cover Printing Updating
 
 
 ## [1.0.0] - 2025-06-05
