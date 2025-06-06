@@ -27,36 +27,36 @@ class OrderedBook extends Model
 
     public function designQueue()
     {
-        return $this->hasOne(DesignQueue::class);
+        return $this->hasOne(DesignQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 
     public function printingQueue()
     {
-        return $this->hasOne(PrintingQueue::class);
+        return $this->hasOne(PrintingQueue::class, 'ordered_book_id', 'ordered_book_id' );
     }
 
     public function coverPrintingQueue()
     {
-        return $this->hasOne(CoverPrintingQueue::class);
+        return $this->hasOne(CoverPrintingQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 
     public function bindingQueue()
     {
-        return $this->hasOne(BindingQueue::class);
+        return $this->hasOne(BindingQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 
     public function qcQueue()
     {
-        return $this->hasOne(QcQueue::class);
+        return $this->hasOne(QcQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 
     public function packagingQueue()
     {
-        return $this->hasOne(PackagingQueue::class);
+        return $this->hasOne(PackagingQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 
     public function shipmentQueue()
     {
-        return $this->hasOne(ShipmentQueue::class);
+        return $this->hasOne(ShipmentQueue::class, 'ordered_book_id', 'ordered_book_id');
     }
 }

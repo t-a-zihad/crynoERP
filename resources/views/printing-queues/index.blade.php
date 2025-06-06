@@ -34,12 +34,14 @@
                     $statusColors = [
                         'In Queue' => 'status-queue',         // Purple
                         'In Progress' => 'status-progress',   // Blue
+                        'Rendered' => 'status-progress',
                         'Done' => 'status-success',           // Green
                         'Rejected' => 'status-rejected'       // Red
                     ];
 
                     // Determine the current status color class
                     $statusClass = $statusColors[$item->status] ?? 'status-queue';
+                    $cStatusClass = $statusColors[$item->cover_printing_status] ?? 'status-queue';
                 @endphp
                 <tr>
                     <td>{{ $item->ordered_book_id }}</td>
@@ -58,7 +60,11 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $item->cover_printing_status }}</td>
+                    <td>
+                        <span class="btn btn-sm {{ $cStatusClass }}">
+                            {{ $item->cover_printing_status }}
+                        </span>
+                    </td>
                     <td>
                         <form action="{{ route('printing-queues.update', $item->id) }}" method="POST">
                             @csrf

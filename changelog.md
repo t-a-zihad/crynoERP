@@ -8,6 +8,7 @@
 ### Fixed
 - Fix Responsive Design for Queue Tables
 - Fix Pre Designed Cover Printing Updating
+- Fix Ordered Book All status Updating
 
 
 ## [1.0.0] - 2025-06-05

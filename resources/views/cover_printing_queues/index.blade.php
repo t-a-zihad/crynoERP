@@ -33,6 +33,7 @@
                     // Define status colors
                     $statusColors = [
                         'In Queue' => 'status-queue',   // Purple
+                        'In Progress' => 'status-progress',   // Blue
                         'Rendered' => 'status-progress',// Blue
                         'Done' => 'status-success',     // Green
                         'Rejected' => 'status-rejected' // Red
@@ -40,6 +41,7 @@
 
                     // Determine the current status color class
                     $statusClass = $statusColors[$queue->status] ?? 'status-queue';
+                    $pStatusClass = $statusColors[$queue->printing_status] ?? 'status-queue';
                 @endphp
 
                 <tr>
@@ -64,7 +66,11 @@
                         @endif
                     </td>
 
-                    <td>{{ $queue->printing_status }}</td>
+                    <td>
+                        <span class="btn btn-sm {{ $pStatusClass }}">
+                            {{ $queue->printing_status }}
+                        </span>
+                    </td>
 
                     <!-- Status Column (Editable) -->
                     <td>
