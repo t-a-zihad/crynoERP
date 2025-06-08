@@ -83,7 +83,7 @@
 		<!-- End Google Tag Manager -->
 	</head>
 	<body class="sidebar-dark header-dark">
-		<div class="pre-loader">
+		<!--<div class="pre-loader">
 			<div class="pre-loader-box">
 				<div class="loader-logo">
 					<img src="{{ asset('src\images\apple-touch-icon.png') }}" width="100px" alt="" />
@@ -94,7 +94,7 @@
 				<div class="percent" id="percent1">0%</div>
 				<div class="loading-text">Loading...</div>
 			</div>
-		</div>
+		</div>-->
 
 		<div class="header">
 
