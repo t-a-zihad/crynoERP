@@ -126,26 +126,7 @@ class OrderController extends Controller
                 'handled_by' => $employeeId,
             ]);
 
-                /*CoverPrintingQueue::create([
-                    'order_id' => $orderId,
-                    'ordered_book_id' => $orderedBookId,
-                    'status' => 'In Queue',
-                    'handled_by' => $employeeId,
-                ]);
-
-                BindingQueue::create([
-                    'order_id' => $orderId,
-                    'ordered_book_id' => $orderedBookId,
-                    'status' => 'In Queue',
-                    'handled_by' => $employeeId,
-                ]);
-
-                QcQueue::create([
-                    'order_id' => $orderId,
-                    'ordered_book_id' => $orderedBookId,
-                    'status' => 'In Queue',
-                    'handled_by' => $employeeId,
-                ]);*/
+                
 
 
         }
