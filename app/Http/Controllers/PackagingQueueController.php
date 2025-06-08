@@ -70,4 +70,44 @@ class PackagingQueueController extends Controller
         return redirect()->route('packaging-queues.index');
     }
 
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'selected_ids' => 'required|string',
+            'bulk_status' => 'required|string|in:In queue,Done,Rejected',
+        ]);
+
+        $ids = json_decode($request->selected_ids);
+        $status = $request->bulk_status;
+        $employeeId = session('employee_id');
+
+        foreach ($ids as $id) {
+            $queue = PackagingQueue::find($id);
+            if (!$queue) continue;
+
+            $queue->status = $status;
+            $queue->save();
+
+            if ($status === 'Done') {
+                $orderId = $queue->order_id;
+                $exists = ShipmentQueue::where('order_id', $orderId)->exists();
+                if (!$exists) {
+                    ShipmentQueue::create([
+                        'order_id' => $orderId,
+                        'status' => 'In queue',
+                        'handled_by' => $employeeId,
+                    ]);
+                }
+            }
+        }
+
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 5000)
+            ->success('Selected packaging queue items updated successfully!');
+
+        return redirect()->route('packaging-queues.index');
+    }
+
+
 }

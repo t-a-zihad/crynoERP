@@ -53,4 +53,47 @@ class BindingQueueController extends Controller
         return redirect()->route('binding-queues.index');
     }
 
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'selected_ids' => 'required|string',
+            'bulk_status' => 'required|string'
+        ]);
+
+        $ids = json_decode($request->selected_ids);
+        $status = $request->bulk_status;
+        $employeeId = session('employee_id');
+
+        foreach ($ids as $id) {
+            $queue = BindingQueue::find($id);
+            if (!$queue) continue;
+
+            $queue->status = $status;
+            $queue->save();
+
+            if ($status === 'Done') {
+                $exists = QcQueue::where('order_id', $queue->order_id)
+                    ->where('ordered_book_id', $queue->ordered_book_id)
+                    ->exists();
+
+                if (!$exists) {
+                    QcQueue::create([
+                        'order_id' => $queue->order_id,
+                        'ordered_book_id' => $queue->ordered_book_id,
+                        'status' => 'In Queue',
+                        'handled_by' => $employeeId,
+                    ]);
+                }
+            }
+        }
+
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 8000)
+            ->success('Selected binding queue items updated successfully!');
+
+        return redirect()->back();
+    }
+
+
 }

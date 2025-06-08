@@ -58,6 +58,8 @@ Route::middleware([CheckEmployeeSession::class])->group(function () {
 
         // Queue routes
         Route::resource('design-queues', DesignQueueController::class);
+
+
         Route::resource('printing-queues', PrintingQueueController::class);
         Route::resource('cover-printing-queues', CoverPrintingQueueController::class);
         Route::resource('binding-queues', BindingQueueController::class);
@@ -65,6 +67,20 @@ Route::middleware([CheckEmployeeSession::class])->group(function () {
         Route::resource('packaging-queues', PackagingQueueController::class);
         Route::resource('shipment-queues', ShipmentQueueController::class);
     });
+
+    //Bulk Updaters
+    Route::post('design-queues/bulk-update', [DesignQueueController::class, 'bulkUpdate'])->name('design-queues.bulk-update');
+    Route::post('/printing-queues/bulk-update', [PrintingQueueController::class, 'bulkUpdate'])->name('printing-queues.bulk-update');
+    Route::post('/cover-printing-queues/bulk-update', [CoverPrintingQueueController::class, 'bulkUpdate'])->name('cover-printing-queues.bulk-update');
+    Route::post('/binding-queues/bulk-update', [BindingQueueController::class, 'bulkUpdate'])->name('binding-queues.bulk-update');
+    Route::post('/qc-queues/bulk-update', [QcQueueController::class, 'bulkUpdate'])->name('qc-queues.bulk-update');
+    Route::post('/packaging-queues/bulk-update', [PackagingQueueController::class, 'bulkUpdate'])->name('packaging-queues.bulk-update');
+    Route::post('/shipment-queues/bulk-update', [ShipmentQueueController::class, 'bulkUpdate'])->name('shipment-queues.bulk-update');
+
+
+
+
+
 
 });
 

@@ -1,9 +1,10 @@
 # Changelog
 
 
-## [Unreleased]
+## [1.0.1] - 2025-06-08
 ### Added
 - Add Different Color according to Status
+- Add Multiple Status Updating Feature
 
 ### Fixed
 - Fix Responsive Design for Queue Tables

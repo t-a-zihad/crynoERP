@@ -69,4 +69,51 @@ class PrintingQueueController extends Controller
         return redirect()->route('printing-queues.index');
     }
 
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'selected_ids' => 'required|string',
+            'bulk_status' => 'required|string'
+        ]);
+
+        $ids = json_decode($request->selected_ids);
+        $status = $request->bulk_status;
+        $employeeId = session('employee_id');
+
+        foreach ($ids as $id) {
+            $printingQueue = PrintingQueue::find($id);
+            if (!$printingQueue) continue;
+
+            $printingQueue->status = $status;
+            $printingQueue->save();
+
+            $coverQueue = CoverPrintingQueue::where('order_id', $printingQueue->order_id)
+                ->where('ordered_book_id', $printingQueue->ordered_book_id)
+                ->first();
+
+            if ($coverQueue && $status === 'Done' && $coverQueue->status === 'Done') {
+                $exists = BindingQueue::where('order_id', $printingQueue->order_id)
+                    ->where('ordered_book_id', $printingQueue->ordered_book_id)
+                    ->exists();
+
+                if (!$exists) {
+                    BindingQueue::create([
+                        'order_id' => $printingQueue->order_id,
+                        'ordered_book_id' => $printingQueue->ordered_book_id,
+                        'status' => 'In Queue',
+                        'handled_by' => $employeeId,
+                    ]);
+                }
+            }
+        }
+
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 8000)
+            ->success('Selected printing queue items updated successfully!');
+
+        return redirect()->back();
+    }
+
+
 }
