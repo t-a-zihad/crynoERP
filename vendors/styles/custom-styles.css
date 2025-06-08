@@ -1,0 +1,54 @@
+/* Green for Done */
+.status-success {
+    background-color: #28a745;
+    color: white;
+    width: fit-content
+}
+
+/* Purple for In Queue */
+.status-queue {
+    background-color: #6f42c1;
+    color: white;
+    width: fit-content
+}
+
+/* Red for Rejected */
+.status-rejected {
+    background-color: #dc3545;
+    color: white;
+    width: fit-content
+}
+
+/* Blue for Sent and Returned */
+.status-progress {
+    background-color: #007bff;
+    color: white;
+    width: fit-content
+}
+
+
+/* High Priority: Red text on a whitish background */
+.priority-high {
+    color: #e3342f; /* Red */
+    background-color: #f8d7da; /* Light red */
+}
+
+/* Normal Priority: Yellow text on a whitish background */
+.priority-normal {
+    color: #f59e0b; /* Yellow */
+    background-color: #fff3cd; /* Light yellow */
+}
+
+/* Low Priority: Navy blue text on a whitish background */
+.priority-low {
+    color: #1e3a8a; /* Navy blue */
+    background-color: #dbeafe; /* Light blue */
+}
+
+/* Optional: For N/A, you can apply a muted style */
+.text-muted {
+    color: #6c757d !important; /* Greyish text */
+}
+
+
+
