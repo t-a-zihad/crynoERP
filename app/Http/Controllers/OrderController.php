@@ -14,6 +14,7 @@ use App\Models\ShipmentQueue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Employee;
 
 class OrderController extends Controller
 {
@@ -126,7 +127,7 @@ class OrderController extends Controller
                 'handled_by' => $employeeId,
             ]);
 
-                
+
 
 
         }
@@ -150,61 +151,63 @@ class OrderController extends Controller
 
     public function edit($orderId)
     {
-        $order = Order::with('books')->where('order_id', $orderId)->firstOrFail();
-        $employees = \App\Models\Employee::where('role', 'order manager')->get();
+        $order = Order::with('orderedBooks')->where('order_id', $orderId)->firstOrFail();
+        $employees = Employee::where('role', 'order manager')->get();
 
         return view('orders.edit', compact('order', 'employees'));
     }
 
-public function update(Request $request, $orderId)
-{
-    $order = Order::where('order_id', $orderId)->firstOrFail();
 
-    $request->validate([
-        'order_priority' => 'required|string',
-        'customer_name' => 'required|string',
-        'phone_number' => 'required|string',
-        'shipping_address' => 'required|string',
-        'delivery_type' => 'required|string',
-        'discount' => 'nullable|numeric',
-        'order_note' => 'nullable|string',
-        'handled_by' => 'required|integer|exists:employees,id',
-        'books' => 'required|array|min:1',
-        'books.*.book_name' => 'required|string',
-        'books.*.book_author' => 'nullable|string',
-        'books.*.binding_type' => 'required|string',
-        'books.*.special_note' => 'nullable|string',
-        'books.*.custom_cover' => 'nullable|boolean',
-        'books.*.unit_price' => 'required|numeric',
-        'books.*.qty' => 'required|integer|min:1',
-    ]);
+    public function update(Request $request, $orderId)
+    {
+        $request->validate([
+            'order_priority' => 'required|string',
+            'customer_name' => 'required|string',
+            'phone_number' => 'required|string',
+            'shipping_address' => 'required|string',
+            'delivery_type' => 'required|string',
+            'discount' => 'nullable|numeric',
+            'order_note' => 'nullable|string',
+            'books' => 'required|array|min:1',
+            'books.*.book_name' => 'required|string',
+            'books.*.book_author' => 'nullable|string',
+            'books.*.binding_type' => 'required|string',
+            'books.*.special_note' => 'nullable|string',
+            'books.*.custom_cover' => 'nullable|boolean',
+            'books.*.unit_price' => 'required|numeric',
+            'books.*.qty' => 'required|integer|min:1',
+        ]);
 
-    $deliveryCharge = match ($request->delivery_type) {
-        'Free' => 0,
-        'Inside Dhaka' => 70,
-        'Outside Dhaka' => 110,
-        default => 0,
-    };
+        $order = Order::where('order_id', $orderId)->firstOrFail();
 
-    $order->update([
-        'order_priority' => $request->order_priority,
-        'customer_name' => $request->customer_name,
-        'phone_number' => $request->phone_number,
-        'shipping_address' => $request->shipping_address,
-        'delivery_type' => $request->delivery_type,
-        'delivery_charge' => $deliveryCharge,
-        'discount' => $request->discount ?? 0,
-        'order_note' => $request->order_note,
-        'handled_by' => $request->handled_by,
-    ]);
+        $deliveryCharge = match ($request->delivery_type) {
+            'Free' => 0,
+            'Inside Dhaka' => 70,
+            'Outside Dhaka' => 110,
+            default => 0,
+        };
 
-    $employeeId = session('employee_id'); // from logged-in user
+        $order->update([
+            'order_priority' => $request->order_priority,
+            'customer_name' => $request->customer_name,
+            'phone_number' => $request->phone_number,
+            'shipping_address' => $request->shipping_address,
+            'delivery_type' => $request->delivery_type,
+            'delivery_charge' => $deliveryCharge,
+            'discount' => $request->discount ?? 0,
+            'order_note' => $request->order_note,
+            'handled_by' => $request->handled_by,
+        ]);
 
-    foreach ($request->books as $index => $bookData) {
-        if (!empty($bookData['ordered_book_id'])) {
-            $book = OrderedBook::where('ordered_book_id', $bookData['ordered_book_id'])->first();
-            if ($book) {
-                $book->update([
+        $employeeId = session('employee_id');
+        $existingBooks = $order->orderedBooks->keyBy('ordered_book_id');
+
+        foreach ($request->books as $index => $bookData) {
+            $bookId = $bookData['ordered_book_id'] ?? null;
+
+            if ($bookId && $existingBooks->has($bookId)) {
+                // Update existing book
+                $existingBooks[$bookId]->update([
                     'book_name' => $bookData['book_name'],
                     'book_author' => $bookData['book_author'] ?? null,
                     'binding_type' => $bookData['binding_type'],
@@ -213,34 +216,62 @@ public function update(Request $request, $orderId)
                     'unit_price' => $bookData['unit_price'],
                     'qty' => $bookData['qty'],
                 ]);
-                continue;
+            } else {
+                // Add new book
+                $bookNumber = str_pad($index + 1, 3, '0', STR_PAD_LEFT);
+                $newBookId = $orderId . '-B-' . $bookNumber;
+
+                OrderedBook::create([
+                    'ordered_book_id' => $newBookId,
+                    'order_id' => $orderId,
+                    'book_name' => $bookData['book_name'],
+                    'book_author' => $bookData['book_author'] ?? null,
+                    'binding_type' => $bookData['binding_type'],
+                    'special_note' => $bookData['special_note'] ?? null,
+                    'custom_cover' => $bookData['custom_cover'] ?? false,
+                    'unit_price' => $bookData['unit_price'],
+                    'qty' => $bookData['qty'],
+                ]);
+
+                // Initialize queues
+                DesignQueue::create([
+                    'order_id' => $orderId,
+                    'ordered_book_id' => $newBookId,
+                    'status' => 'In Queue',
+                    'handled_by' => $employeeId,
+                ]);
+
+                PrintingQueue::create([
+                    'order_id' => $orderId,
+                    'ordered_book_id' => $newBookId,
+                    'status' => 'In Queue',
+                    'handled_by' => $employeeId,
+                ]);
+
+                //Order Overall status updaing
+                $packagingQueue = PackagingQueue::where('order_id', $orderId)->firstOrFail();
+                $shipmentQueue = ShipmentQueue::where('order_id', $orderId)->firstOrFail();
+
+                $packagingQueue->update([
+                    'status' => 'In Progress'
+                ]);
+
+                $shipmentQueue->update([
+                    'status' => 'In Progress'
+                ]);
             }
         }
 
-        $bookNumber = str_pad($index + 1, 3, '0', STR_PAD_LEFT);
-        $orderedBookId = $order->order_id . '-B-' . $bookNumber;
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 5000)
+            ->success('Order updated successfully!');
 
-        OrderedBook::create([
-            'ordered_book_id' => $orderedBookId,
-            'order_id' => $order->order_id,
-            'book_name' => $bookData['book_name'],
-            'book_author' => $bookData['book_author'] ?? null,
-            'binding_type' => $bookData['binding_type'],
-            'special_note' => $bookData['special_note'] ?? null,
-            'custom_cover' => $bookData['custom_cover'] ?? false,
-            'unit_price' => $bookData['unit_price'],
-            'qty' => $bookData['qty'],
-        ]);
-
-
+        return redirect()->route('orders.index');
     }
 
-    return redirect()->route('orders.index')->with('success', 'Order updated successfully!');
+
+
+
+
 }
-
-
-}
-
-
-
-

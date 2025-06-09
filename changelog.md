@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.2]
+### Added
+- Add Updating Features For Order
 
 ## [1.0.1] - 2025-06-08
 ### Added

@@ -51,7 +51,7 @@
                 <td>{{ number_format($grandTotal, 2) }}</td>
                 <td>{{ $status }}</td>
                 <td>
-                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-primary">Edit</a>
                 </td>
             </tr>
         @endforeach
