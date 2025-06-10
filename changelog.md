@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 2025-06-10
+### Added
+- Add Updating Features For Order
+- Add Order Invoice Generation
+
 
 ## [1.0.1] - 2025-06-08
 ### Added

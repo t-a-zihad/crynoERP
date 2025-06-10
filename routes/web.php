@@ -51,6 +51,7 @@ Route::middleware([CheckEmployeeSession::class])->group(function () {
 
     // Orders
     Route::resource('orders', OrderController::class);
+    Route::get('/orders/{order}/invoice', [OrderController::class, 'generateInvoice'])->name('orders.invoice');
 
     Route::prefix('order')->group(function () {
         // Ordered Books (optional if you want individual book management)

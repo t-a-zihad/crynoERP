@@ -97,7 +97,7 @@
         <hr>
         <h4>Books</h4>
         <div id="books-wrapper">
-            @foreach(old('books', $order->books->toArray()) as $index => $book)
+            @foreach(old('books', $order->orderedBooks->toArray()) as $index => $book)
             <div class="book-item border p-3 mb-3">
                 <input type="hidden" name="books[{{ $index }}][ordered_book_id]" value="{{ $book['ordered_book_id'] ?? '' }}">
                 <div class="form-row">
@@ -199,7 +199,7 @@
 </div>
 
 <script>
-    let bookIndex = {{ count(old('books', $order->books)) }};
+    let bookIndex = {{ count(old('books', $order->orderedBooks)) }};
     function addBook() {
         const wrapper = document.getElementById('books-wrapper');
         const firstBook = document.querySelector('.book-item');
