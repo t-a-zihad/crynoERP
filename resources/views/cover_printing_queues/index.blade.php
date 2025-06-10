@@ -30,7 +30,6 @@
                     <th>Priority</th>
                     <th>Special Note</th>
                     <th>Cover</th>
-                    <th>Book Print Status</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -69,7 +68,6 @@
                                 -
                             @endif
                         </td>
-                        <td><span class="btn btn-sm {{ $pStatusClass }}">{{ $queue->printing_status }}</span></td>
                         <td>
                             <form action="{{ route('cover-printing-queues.update', $queue->id) }}" method="POST" class="form-inline">
                                 @csrf

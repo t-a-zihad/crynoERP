@@ -1,24 +1,33 @@
 @extends('parts.main')
 
-@section('pageHeader', 'All Orders')
+@section('pageHeader', 'View Order')
 
 @section('main-section')
+<style>
+    .highlighted {
+        background-color: #e9ecef;  /* Light grey background */
+        font-weight: bold;          /* Make the text bold */
+    }
+    table tr td:nth-child(1){
+        width: 80px
+    }
+</style>
+
 <div class="table-responsive">
+
+
 <table class="table table-bordered table-hover">
-    <thead class="thead-light">
+    <thead>
         <tr>
-            <th>Date</th>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Book Count</th>
-            <th>Manager</th>
-            <th>Grand Total Price (BDT)</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th class="highlighted">Actions</th>
+            <th>
+                <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{{ route('orders.invoice', $order->order_id) }}" class="btn btn-sm btn-warning">Invoice</a>
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach($orders as $order)
+
             @php
                 $bookCount = $order->orderedBooks->count();
 
@@ -43,22 +52,38 @@
                 }
             @endphp
             <tr>
+                <td class="highlighted">Date</td>
                 <td>{{ $order->created_at->format('Y-m-d') }}</td>
-                <td>{{ $order->order_id }}</td>
-                <td>{{ $order->customer_name }}</td>
-                <td>{{ $bookCount }}</td>
-                <td>{{ $order->handledBy->name ?? 'N/A' }}</td>
-                <td>{{ number_format($grandTotal, 2) }}</td>
-                <td>{{ $status }}</td>
-                <td>
-                    <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="{{ route('orders.show', $order->order_id) }}" class="btn btn-sm btn-primary">View</a>
-                    <a href="{{ route('orders.invoice', $order->order_id) }}" class="btn btn-sm btn-success">Invoice</a>
-
-                </td>
             </tr>
-        @endforeach
+            <tr>
+                <td class="highlighted">Order ID</td>
+                <td>{{ $order->order_id }}</td>
+            </tr>
+            <tr>
+                <td class="highlighted">Customer Name</td>
+                <td>{{ $order->customer_name }}</td>
+            </tr>
+            <tr>
+                <td class="highlighted">Book Count</td>
+                <td>{{ $bookCount }}</td>
+            </tr>
+            <tr>
+                <td class="highlighted">Manager</td>
+                <td>{{ $order->handledBy->name ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td class="highlighted">Grand Total Price (BDT)</td>
+                <td>{{ number_format($grandTotal, 2) }}</td>
+            </tr>
+            <tr>
+                <td class="highlighted">Status</td>
+                <td>{{ $status }}</td>
+            </tr>
+
+
     </tbody>
 </table>
+
+
 </div>
 @endsection

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3]
+### Added
+- Add View Features For Order (Partial)
+
+### Changed
+- Show Cover Print status in Binding Queue in stead of Cover Print/Print queue
+
+
 ## [1.0.2] - 2025-06-10
 ### Added
 - Add Updating Features For Order

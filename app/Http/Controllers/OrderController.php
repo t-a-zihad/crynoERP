@@ -143,11 +143,12 @@ class OrderController extends Controller
         return redirect()->route('orders.index');
     }
 
-    public function show($id)
+    public function show($orderId)
     {
-        // If you don't need to show individual order details,
-        // you can leave this empty or return a 404 or redirect
-        abort(404);
+        $order = Order::with('orderedBooks', 'designQueue', 'printingQueue', 'coverPrintingQueue', 'bindingQueue', 'qcQueue', 'packagingQueue', 'shipmentQueue')->where('order_id', $orderId)->firstOrFail();
+        $employees = Employee::where('role', 'order manager')->get();
+
+        return view('orders.show', compact('order', 'employees'));
     }
 
     public function edit($orderId)

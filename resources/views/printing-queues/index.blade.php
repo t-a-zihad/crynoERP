@@ -30,7 +30,6 @@
                     <th>Priority</th>
                     <th>Special Note</th>
                     <th>PDF Link</th>
-                    <th>Cover Print Status</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -55,7 +54,6 @@
                             'Rejected' => 'status-rejected'
                         ];
                         $statusClass = $statusColors[$item->status] ?? 'status-queue';
-                        $cStatusClass = $statusColors[$item->cover_printing_status] ?? 'status-queue';
                     @endphp
                     <tr>
                         <td><input type="checkbox" class="row-checkbox" value="{{ $item->id }}"></td>
@@ -71,7 +69,6 @@
                                 -
                             @endif
                         </td>
-                        <td><span class="btn btn-sm {{ $cStatusClass }}">{{ $item->cover_printing_status }}</span></td>
                         <td>
                             <form action="{{ route('printing-queues.update', $item->id) }}" method="POST">
                                 @csrf

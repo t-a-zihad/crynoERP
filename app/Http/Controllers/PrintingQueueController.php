@@ -18,7 +18,7 @@ class PrintingQueueController extends Controller
 
         // attach cover printing queue data manually
         foreach ($items as $item) {
-            $coverPrinting = \App\Models\CoverPrintingQueue::where('order_id', $item->order_id)
+            $coverPrinting = CoverPrintingQueue::where('order_id', $item->order_id)
                 ->where('ordered_book_id', $item->ordered_book_id)
                 ->first();
 
@@ -43,7 +43,7 @@ class PrintingQueueController extends Controller
             ->where('ordered_book_id', $printingQueue->ordered_book_id)
             ->first();
 
-        if ($coverQueue && $printingQueue->status === 'Done' && $coverQueue->status === 'Done') {
+        if ($printingQueue->status === 'Done') {
             $employeeId = session('employee_id'); // or Auth::id()
 
             // Check if BindingQueue already exists to avoid duplicates
@@ -91,7 +91,7 @@ class PrintingQueueController extends Controller
                 ->where('ordered_book_id', $printingQueue->ordered_book_id)
                 ->first();
 
-            if ($coverQueue && $status === 'Done' && $coverQueue->status === 'Done') {
+            if ($status === 'Done') {
                 $exists = BindingQueue::where('order_id', $printingQueue->order_id)
                     ->where('ordered_book_id', $printingQueue->ordered_book_id)
                     ->exists();
