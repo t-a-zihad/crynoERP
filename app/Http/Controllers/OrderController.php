@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -269,6 +270,18 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index');
     }
+
+
+
+    public function generateInvoice($orderId)
+    {
+        $order = Order::with('orderedBooks')->where('order_id', $orderId)->firstOrFail();
+        //$pdf = Pdf::loadView('orders.invoice', compact('order'));
+        //return $pdf->download('invoice_' . $orderId . '.pdf');
+
+        return view('orders.invoice', compact('order'));
+    }
+
 
 
 
