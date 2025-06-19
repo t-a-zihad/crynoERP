@@ -4,6 +4,7 @@
 ### Added
 - Add View Features For Order
 - Add Delet Features For Order
+- View Cover Type in Design Queue
 
 ### Changed
 - Show Cover Print status in Binding Queue in stead of Cover Print/Print queue
