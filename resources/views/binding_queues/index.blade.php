@@ -29,6 +29,7 @@
                     <th>Qty</th>
                     <th>Priority</th>
                     <th>Special Note</th>
+                    <th>Cover Print Status</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -51,6 +52,7 @@
 
                         $statusClass = $statusColors[$queue->status] ?? 'status-queue';
                         $priorityClass = $priorityColors[$queue->orderedBook->order->order_priority] ?? 'priority-low';
+                        $cStatusClass = $statusColors[$queue->cover_printing_status] ?? 'status-queue';
                     @endphp
                     <tr>
                         <td><input type="checkbox" class="row-checkbox" value="{{ $queue->id }}"></td>
@@ -63,6 +65,7 @@
                             </span>
                         </td>
                         <td>{{ $queue->orderedBook->special_note ?? '-' }}</td>
+                        <td><span class="btn btn-sm {{ $cStatusClass }}">{{ $queue->cover_printing_status }}</span></td>
                         <td>
                             <form action="{{ route('binding-queues.update', $queue->id) }}" method="POST" class="form-inline">
                                 @csrf

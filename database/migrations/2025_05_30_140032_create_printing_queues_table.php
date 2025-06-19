@@ -22,6 +22,7 @@ class CreatePrintingQueuesTable extends Migration
             $table->index('order_id');
             $table->index('ordered_book_id');
             $table->foreign('handled_by')->references('id')->on('employees')->onDelete('restrict');
+            $table->foreign('order_id')->references('order_id')->on('orders')->onDelete('cascade');
         });
     }
 

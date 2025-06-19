@@ -53,6 +53,7 @@ class OrderController extends Controller
             'books.*.book_name' => 'required|string',
             'books.*.book_author' => 'nullable|string',
             'books.*.binding_type' => 'required|string',
+            'books.*.lamination_type' => 'required|string',
             'books.*.special_note' => 'nullable|string',
             'books.*.custom_cover' => 'nullable|boolean',
             'books.*.unit_price' => 'required|numeric',
@@ -104,6 +105,7 @@ class OrderController extends Controller
                 'book_name' => $bookData['book_name'],
                 'book_author' => $bookData['book_author'] ?? null,
                 'binding_type' => $bookData['binding_type'],
+                'lamination_type' => $bookData['lamination_type'],
                 'special_note' => $bookData['special_note'] ?? null,
                 'custom_cover' => $bookData['custom_cover'] ?? false,
                 'unit_price' => $bookData['unit_price'],
@@ -143,11 +145,12 @@ class OrderController extends Controller
         return redirect()->route('orders.index');
     }
 
-    public function show($id)
+    public function show($orderId)
     {
-        // If you don't need to show individual order details,
-        // you can leave this empty or return a 404 or redirect
-        abort(404);
+        $order = Order::with('orderedBooks', 'designQueue', 'printingQueue', 'coverPrintingQueue', 'bindingQueue', 'qcQueue', 'packagingQueue', 'shipmentQueue')->where('order_id', $orderId)->firstOrFail();
+        $employees = Employee::where('role', 'order manager')->get();
+
+        return view('orders.show', compact('order', 'employees'));
     }
 
     public function edit($orderId)
@@ -281,6 +284,32 @@ class OrderController extends Controller
 
         return view('orders.invoice', compact('order'));
     }
+
+    public function destroy($id)
+    {
+        // Find the order by ID
+        $order = Order::where('order_id', $id)->firstOrFail();
+
+        // Delete associated books and queues
+        $order->orderedBooks()->delete(); // Deleting related books
+        $order->designQueue()->delete();
+        $order->printingQueue()->delete();
+        $order->coverPrintingQueue()->delete();
+        $order->bindingQueue()->delete();
+        $order->qcQueue()->delete();
+        $order->packagingQueue()->delete();
+        $order->shipmentQueue()->delete();
+
+        // Delete the order itself
+        $order->delete();
+
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 5000)
+            ->success('Order deleted successfully!');
+        return redirect()->route('orders.index');
+    }
+
 
 
 

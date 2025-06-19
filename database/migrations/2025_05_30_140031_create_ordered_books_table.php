@@ -17,6 +17,7 @@ class CreateOrderedBooksTable extends Migration
             $table->string('book_name');
             $table->string('book_author')->nullable();
             $table->enum('binding_type', ['Paperback', 'Hardcover', 'Spiral'])->default('Paperback');
+            $table->enum('lamination_type', ['Glossy', 'Matt'])->default('Matt');
             $table->text('special_note')->nullable();
             $table->string('book_pdf')->nullable();
             $table->boolean('custom_cover')->default(false);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BindingQueue;
 use Illuminate\Http\Request;
 use App\Models\QcQueue;
+use App\Models\CoverPrintingQueue;
 
 class BindingQueueController extends Controller
 {
@@ -13,6 +14,15 @@ class BindingQueueController extends Controller
         $queues = BindingQueue::with('orderedBook.order')
             ->orderByDesc('ordered_book_id')
             ->get();
+
+        foreach ($queues as $queue) {
+            $coverPrinting = CoverPrintingQueue::where('order_id', $queue->order_id)
+                ->where('ordered_book_id', $queue->ordered_book_id)
+                ->first();
+
+            $queue->cover_printing_status = $coverPrinting->status ?? 'In Design';
+            // Add other properties if needed
+        }
 
         return view('binding_queues.index', compact('queues'));
     }

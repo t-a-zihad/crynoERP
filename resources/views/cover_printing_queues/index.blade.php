@@ -28,9 +28,10 @@
                     <th>Book Name</th>
                     <th>Qty</th>
                     <th>Priority</th>
+                    <th>Binding Type</th>
+                    <th>Lamination Type</th>
                     <th>Special Note</th>
                     <th>Cover</th>
-                    <th>Book Print Status</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -61,6 +62,8 @@
                         <td>{{ $queue->orderedBook->book_name ?? 'N/A' }}</td>
                         <td>{{ $queue->orderedBook->qty ?? 'N/A' }}</td>
                         <td><span class="btn btn-sm {{ $priorityClass }}">{{ $queue->orderedBook->order->order_priority ?? 'N/A' }}</span></td>
+                        <td>{{ $queue->orderedBook->binding_type }}</td>
+                        <td>{{ $queue->orderedBook->lamination_type }}</td>
                         <td>{{ $queue->orderedBook->special_note ?? '-' }}</td>
                         <td>
                             @if(!empty($queue->orderedBook->cover))
@@ -69,7 +72,6 @@
                                 -
                             @endif
                         </td>
-                        <td><span class="btn btn-sm {{ $pStatusClass }}">{{ $queue->printing_status }}</span></td>
                         <td>
                             <form action="{{ route('cover-printing-queues.update', $queue->id) }}" method="POST" class="form-inline">
                                 @csrf

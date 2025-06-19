@@ -44,23 +44,7 @@ class CoverPrintingQueueController extends Controller
             ->where('ordered_book_id', $queue->ordered_book_id)
             ->first();
 
-        if ($printingQueue && $queue->status === 'Done' && $printingQueue->status === 'Done') {
-            $employeeId = session('employee_id'); // or Auth::id() if using auth
 
-            // Check if BindingQueue already exists to avoid duplicates
-            $exists = BindingQueue::where('order_id', $queue->order_id)
-                ->where('ordered_book_id', $queue->ordered_book_id)
-                ->exists();
-
-            if (!$exists) {
-                BindingQueue::create([
-                    'order_id' => $queue->order_id,
-                    'ordered_book_id' => $queue->ordered_book_id,
-                    'status' => 'In Queue',
-                    'handled_by' => $employeeId,
-                ]);
-            }
-        }
 
         flash()
             ->option('position', 'bottom-right')
@@ -88,24 +72,7 @@ class CoverPrintingQueueController extends Controller
             $queue->status = $status;
             $queue->save();
 
-            $printingQueue = PrintingQueue::where('order_id', $queue->order_id)
-                ->where('ordered_book_id', $queue->ordered_book_id)
-                ->first();
 
-            if ($printingQueue && $status === 'Done' && $printingQueue->status === 'Done') {
-                $exists = BindingQueue::where('order_id', $queue->order_id)
-                    ->where('ordered_book_id', $queue->ordered_book_id)
-                    ->exists();
-
-                if (!$exists) {
-                    BindingQueue::create([
-                        'order_id' => $queue->order_id,
-                        'ordered_book_id' => $queue->ordered_book_id,
-                        'status' => 'In Queue',
-                        'handled_by' => $employeeId,
-                    ]);
-                }
-            }
         }
 
         flash()

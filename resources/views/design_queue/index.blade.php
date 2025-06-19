@@ -32,6 +32,8 @@
                     <th>Book Name</th>
                     <th>Qty</th>
                     <th>Priority</th>
+                    <th>Binding Type</th>
+                    <th>Lamination Type</th>
                     <th>Special Note</th>
                     <th>Status</th>
                 </tr>
@@ -64,6 +66,8 @@
                     @endphp
 
                     <td><span class="btn btn-sm {{ $priorityClass }}">{{ $designQueue->orderedBook->order->order_priority ?? 'N/A' }}</span></td>
+                    <td>{{ $designQueue->orderedBook->binding_type }}</td>
+                    <td>{{ $designQueue->orderedBook->lamination_type }}</td>
                     <td>{{ $designQueue->orderedBook->special_note ?? '-' }}</td>
                     <td>
                         <form action="{{ route('design-queues.update', $designQueue->id) }}" method="POST" class="form-inline">

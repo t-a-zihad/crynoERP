@@ -51,8 +51,15 @@
                 <td>{{ number_format($grandTotal, 2) }}</td>
                 <td>{{ $status }}</td>
                 <td>
-                    <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="{{ route('orders.invoice', $order->order_id) }}" class="btn btn-sm btn-warning">Invoice</a>
+                    <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{{ route('orders.show', $order->order_id) }}" class="btn btn-sm btn-primary">View</a>
+                    <a href="{{ route('orders.invoice', $order->order_id) }}" class="btn btn-sm btn-success">Invoice</a>
+
+                    <form action="{{ route('orders.destroy', $order->order_id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
+                    </form>
                 </td>
             </tr>
         @endforeach
