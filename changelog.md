@@ -2,7 +2,8 @@
 
 ## [1.0.3]
 ### Added
-- Add View Features For Order (Partial)
+- Add View Features For Order
+- Add Delet Features For Order
 
 ### Changed
 - Show Cover Print status in Binding Queue in stead of Cover Print/Print queue

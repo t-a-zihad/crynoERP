@@ -18,6 +18,7 @@ class CreatePackagingQueuesTable extends Migration
             $table->timestamps();
 
             $table->index('order_id');
+            $table->foreign('order_id')->references('order_id')->on('orders')->onDelete('cascade');
             $table->foreign('handled_by')->references('id')->on('employees')->onDelete('restrict');
         });
     }

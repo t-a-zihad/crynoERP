@@ -283,6 +283,32 @@ class OrderController extends Controller
         return view('orders.invoice', compact('order'));
     }
 
+    public function destroy($id)
+    {
+        // Find the order by ID
+        $order = Order::where('order_id', $id)->firstOrFail();
+
+        // Delete associated books and queues
+        $order->orderedBooks()->delete(); // Deleting related books
+        $order->designQueue()->delete();
+        $order->printingQueue()->delete();
+        $order->coverPrintingQueue()->delete();
+        $order->bindingQueue()->delete();
+        $order->qcQueue()->delete();
+        $order->packagingQueue()->delete();
+        $order->shipmentQueue()->delete();
+
+        // Delete the order itself
+        $order->delete();
+
+        flash()
+            ->option('position', 'bottom-right')
+            ->option('timeout', 5000)
+            ->success('Order deleted successfully!');
+        return redirect()->route('orders.index');
+    }
+
+
 
 
 
