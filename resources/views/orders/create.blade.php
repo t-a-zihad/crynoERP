@@ -116,7 +116,7 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label>Binding Type</label>
                         <select name="books[0][binding_type]" class="form-control @error('books.0.binding_type') is-invalid @enderror" required>
                             <option value="Paperback" {{ old('books.0.binding_type') == 'Paperback' ? 'selected' : '' }}>Paperback</option>
@@ -127,14 +127,27 @@
                             <span class="invalid-feedback d-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
+                        <label>Lamination Type</label>
+                        <select name="books[0][lamination_type]" class="form-control @error('books.0.lamination_type') is-invalid @enderror" required>
+                            <option value="Glossy" {{ old('books.0.lamination_type') == 'Glossy' ? 'selected' : '' }}>Glossy</option>
+                            <option value="Matt" {{ old('books.0.lamination_type') == 'Matt' ? 'selected' : '' }}>Matt</option>
+                        </select>
+                        @error('books.0.lamination_type')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
                         <label>Unit Price</label>
                         <input type="number" step="0.01" name="books[0][unit_price]" class="form-control @error('books.0.unit_price') is-invalid @enderror" value="{{ old('books.0.unit_price') }}" required>
                         @error('books.0.unit_price')
                             <span class="invalid-feedback d-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label>Quantity</label>
                         <input type="number" name="books[0][qty]" class="form-control @error('books.0.qty') is-invalid @enderror" value="{{ old('books.0.qty', 1) }}" required>
                         @error('books.0.qty')

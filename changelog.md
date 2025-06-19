@@ -5,6 +5,7 @@
 - Add View Features For Order
 - Add Delet Features For Order
 - View Cover Type in Design Queue
+- Add Lamination Type Property for Ordered Books
 
 ### Changed
 - Show Cover Print status in Binding Queue in stead of Cover Print/Print queue

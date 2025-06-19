@@ -28,6 +28,8 @@
                     <th>Book Name</th>
                     <th>Qty</th>
                     <th>Priority</th>
+                    <th>Binding Type</th>
+                    <th>Lamination Type</th>
                     <th>Special Note</th>
                     <th>Cover</th>
                     <th>Status</th>
@@ -60,6 +62,8 @@
                         <td>{{ $queue->orderedBook->book_name ?? 'N/A' }}</td>
                         <td>{{ $queue->orderedBook->qty ?? 'N/A' }}</td>
                         <td><span class="btn btn-sm {{ $priorityClass }}">{{ $queue->orderedBook->order->order_priority ?? 'N/A' }}</span></td>
+                        <td>{{ $queue->orderedBook->binding_type }}</td>
+                        <td>{{ $queue->orderedBook->lamination_type }}</td>
                         <td>{{ $queue->orderedBook->special_note ?? '-' }}</td>
                         <td>
                             @if(!empty($queue->orderedBook->cover))
