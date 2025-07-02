@@ -1,6 +1,11 @@
 # Changelog
 
 ## [1.0.3]
+### Fixed
+- Added Lamination Type in View order
+- Updated Ordered Book Model to take lamination type
+
+## [1.0.3]
 ### Added
 - Add View Features For Order
 - Add Delet Features For Order

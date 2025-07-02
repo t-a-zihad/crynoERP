@@ -147,6 +147,7 @@
                 <th>Book Name</th>
                 <th>Book Author</th>
                 <th>Binding Type</th>
+                <th>Lamination Type</th>
                 <th>Special Note</th>
                 <th>Book PDF</th>
                 <th>Custom Cover</th>
@@ -245,6 +246,7 @@
                     <td>{{ $book->book_name }}</td>
                     <td>{{ $book->book_author ?? '-' }}</td>
                     <td>{{ $book->binding_type }}</td>
+                    <td>{{ $book->lamination_type }}</td>
                     <td>{{ $book->special_note ?? '-' }}</td>
                     <td>
                         @if($book->pdf_link)

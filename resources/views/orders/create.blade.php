@@ -130,8 +130,8 @@
                     <div class="form-group col-md-6">
                         <label>Lamination Type</label>
                         <select name="books[0][lamination_type]" class="form-control @error('books.0.lamination_type') is-invalid @enderror" required>
-                            <option value="Glossy" {{ old('books.0.lamination_type') == 'Glossy' ? 'selected' : '' }}>Glossy</option>
-                            <option value="Matt" {{ old('books.0.lamination_type') == 'Matt' ? 'selected' : '' }}>Matt</option>
+                            <option value="Glossy" {{ old('books.0.lamination_type') == 'Glossy' ? 'selected' : '' }}>Matt</option>
+                            <option value="Matt" {{ old('books.0.lamination_type') == 'Matt' ? 'selected' : '' }}>Glossy</option>
                         </select>
                         @error('books.0.lamination_type')
                             <span class="invalid-feedback d-block">{{ $message }}</span>
