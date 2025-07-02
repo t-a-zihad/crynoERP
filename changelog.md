@@ -4,6 +4,7 @@
 ### Fixed
 - Added Lamination Type in View order
 - Updated Ordered Book Model to take lamination type
+- Updated ordered book page
 
 ## [1.0.3]
 ### Added
