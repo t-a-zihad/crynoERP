@@ -13,6 +13,8 @@ class CreateShipmentQueuesTable extends Migration
 
             $table->string('order_id');
             $table->string('status')->default('In Queue');
+            $table->string('consignment_id')->nullable();
+            $table->string('tracking_code')->nullable();
             $table->unsignedBigInteger('handled_by');
 
             $table->timestamps();

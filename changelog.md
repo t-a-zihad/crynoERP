@@ -1,12 +1,16 @@
 # Changelog
+## [1.0.5] -
+### Changed
+- Updated Shipment Queue Table, model, index page relavent to API
 
-## [1.0.3]
+
+## [1.0.4] - 2025-07-19
 ### Fixed
 - Added Lamination Type in View order
 - Updated Ordered Book Model to take lamination type
 - Updated ordered book page
 
-## [1.0.3]
+## [1.0.3] - 2025-06-02
 ### Added
 - Add View Features For Order
 - Add Delet Features For Order

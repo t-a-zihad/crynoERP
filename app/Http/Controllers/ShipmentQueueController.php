@@ -18,7 +18,7 @@ class ShipmentQueueController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|string|in:In queue,Shipping,Done,Rejected',
+            'status' => 'required|string',
         ]);
 
         $shipmentQueue = ShipmentQueue::findOrFail($id);
