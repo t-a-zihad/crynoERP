@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShipmentQueue;
 use Illuminate\Http\Request;
+use SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;
 
 class ShipmentQueueController extends Controller
 {

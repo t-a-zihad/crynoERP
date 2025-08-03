@@ -1,5 +1,8 @@
 # Changelog
 ## [1.0.5] -
+### Added
+- SteadFast Courier API 
+
 ### Changed
 - Updated Shipment Queue Table, model, index page relavent to API
 

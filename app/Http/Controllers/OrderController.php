@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
+use SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;
 
 class OrderController extends Controller
 {
