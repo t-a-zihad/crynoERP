@@ -79,7 +79,12 @@ class ShipmentQueueController extends Controller
 
             $response = SteadfastCourier::placeOrder($orderData);
 
-            if($response['status'] == 200){
+            if($response == null){
+                flash()
+                ->option('position', 'bottom-right')
+                ->option('timeout', 10000)
+                ->warning("Error : Couldn't create consignment");
+            }elseif($response['status'] == 200){
                 $invoice = $response['consignment']['invoice'];
                 $consignment_id = $response['consignment']['consignment_id'];
                 $tracking_code = $response['consignment']['tracking_code'];
