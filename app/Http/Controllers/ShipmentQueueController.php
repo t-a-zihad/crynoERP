@@ -165,7 +165,12 @@ class ShipmentQueueController extends Controller
                 // Call the SteadfastCourier API to place the order
                 $response = SteadfastCourier::placeOrder($orderData);
 
-                if ($response['status'] == 200) {
+                if($response == null){
+                    flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 10000)
+                    ->warning("Error : Couldn't create consignment");
+                }elseif ($response['status'] == 200) {
                     // If the response is successful, extract the consignment data
                     $invoice = $response['consignment']['invoice'];
                     $consignment_id = $response['consignment']['consignment_id'];
