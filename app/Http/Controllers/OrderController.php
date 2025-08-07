@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
 use SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;
+use App\Models\Status;
 
 class OrderController extends Controller
 {
@@ -25,10 +26,44 @@ class OrderController extends Controller
         // Eager load relationships
         $orders = Order::with([
             'orderedBooks',       // For book count and prices
+            'printingQueue',
             'packagingQueue',     // For status
             'shipmentQueue',      // For status
             'handledBy'           // For manager name (employee)
         ])->orderBy('created_at', 'desc')->get();
+
+        // Add shortStatus and detailedStatus dynamically to each shipmentQueue
+        $orders = $orders->map(function ($order) {
+
+            if($order->shipmentQueue){
+                if($order->shipmentQueue->consignment_id == null){
+                    $order->shortStatus = "Not Sent";
+                    $order->detailedStatus = "This order is in process, not sent to courier yet";
+                }else{
+                    $steadStatus = SteadfastCourier::checkDeliveryStatusByConsignmentId($order->shipmentQueue->consignment_id);
+
+                    $status;
+
+                    if($steadStatus == null){
+                        $status = 'unknown';
+                    }else if($steadStatus["status"] == 200){
+                        $status = $steadStatus["delivery_status"];
+                    }else{
+                        $status = 'unknown';
+                    }
+
+                    // Use the Status class to get the short and detailed status
+                    $statusData = Status::getStatus($status);
+
+                    // Append the shortStatus and detailedStatus to the shipmentQueue object
+                    $order->shortStatus = $statusData->shortStatus;
+                    $order->detailedStatus = $statusData->statusDetails;
+                }
+            }
+
+
+            return $order;
+        });
 
         return view('orders.index', compact('orders'));
     }
@@ -149,7 +184,38 @@ class OrderController extends Controller
     public function show($orderId)
     {
         $order = Order::with('orderedBooks', 'designQueue', 'printingQueue', 'coverPrintingQueue', 'bindingQueue', 'qcQueue', 'packagingQueue', 'shipmentQueue')->where('order_id', $orderId)->firstOrFail();
+
+
+        if($order->shipmentQueue){
+            if($order->shipmentQueue->consignment_id == null){
+                $order->shortStatus = "Not Sent Courier";
+                $order->detailedStatus = "This order is in process, not sent to courier yet";
+
+            }else{
+                $steadStatus = SteadfastCourier::checkDeliveryStatusByConsignmentId($order->shipmentQueue->consignment_id);
+
+                $status;
+
+                if($steadStatus == null){
+                    $status = 'unknown';
+                }else if($steadStatus["status"] == 200){
+                    $status = $steadStatus["delivery_status"];
+                }else{
+                    $status = 'unknown';
+                }
+
+                // Use the Status class to get the short and detailed status
+                $statusData = Status::getStatus($status);
+
+                // Append the shortStatus and detailedStatus to the shipmentQueue object
+                $order->shortStatus = $statusData->shortStatus;
+                $order->detailedStatus = $statusData->statusDetails;
+            }
+        }
+
+
         $employees = Employee::where('role', 'order manager')->get();
+
 
         return view('orders.show', compact('order', 'employees'));
     }

@@ -25,6 +25,11 @@ class PrintingQueue extends Model
         return $this->belongsTo(OrderedBook::class, 'ordered_book_id', 'ordered_book_id');
     }
 
+    public function printingQueue()
+    {
+        return $this->belongsTo(PrintingQueue::class, 'ordered_book_id', 'ordered_book_id');
+    }
+
     public function coverPrintingQueue()
     {
         return $this->belongsTo(coverPrintingQueue::class, ['order_id', 'ordered_book_id'], ['order_id', 'ordered_book_id']);

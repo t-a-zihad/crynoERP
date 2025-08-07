@@ -1,7 +1,10 @@
 # Changelog
-## [1.0.5] -
+## [1.0.5] - 2025-08-08
 ### Added
-- SteadFast Courier API 
+- Connect SteadFast Courier API 
+- Create Consignment With API
+- Show Courier status & Tracking in Order Index, Shipment Index
+- Show Courier Tracking in View Order
 
 ### Changed
 - Updated Shipment Queue Table, model, index page relavent to API

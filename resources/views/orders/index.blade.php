@@ -14,6 +14,7 @@
             <th>Manager</th>
             <th>Grand Total Price (BDT)</th>
             <th>Status</th>
+            <th>Courier Status & Tracking</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -38,7 +39,7 @@
                 $status = 'In Progress';
                 if (strtolower($packagingStatus) === 'in queue' && strtolower($shipmentStatus) === 'in queue') {
                     $status = 'In Queue';
-                } elseif (strtolower($packagingStatus) === 'done' && strtolower($shipmentStatus) === 'done') {
+                } elseif (strtolower($shipmentStatus) === 'shipped') {
                     $status = 'Shipped';
                 }
             @endphp
@@ -50,6 +51,17 @@
                 <td>{{ $order->handledBy->name ?? 'N/A' }}</td>
                 <td>{{ number_format($grandTotal, 2) }}</td>
                 <td>{{ $status }}</td>
+                <td>
+                    @if($order->shipmentQueue)
+                        @if ($order->shipmentQueue->tracking_code)
+                            <a href="https://steadfast.com.bd/t/{{$order->shipmentQueue->tracking_code}}" data-toggle="tooltip" title="{{$order->detailedStatus}}" class="btn btn-sm btn-secondary" target="_blank">{{$order->shortStatus}}</a>
+                        @else
+                            N/A
+                        @endif
+                    @else
+                            N/A
+                    @endif
+                </td>
                 <td>
                     <a href="{{ route('orders.edit', $order->order_id) }}" class="btn btn-sm btn-warning">Edit</a>
                     <a href="{{ route('orders.show', $order->order_id) }}" class="btn btn-sm btn-primary">View</a>

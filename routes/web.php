@@ -21,13 +21,13 @@ Route::get('/', function () {
 ->name('login');
 Route::post('login', [EmployeeAuthController::class, 'login'])->name('employee.login.submit');
 
-
+Route::get('register', [EmployeeAuthController::class, 'showRegister'])->name('employee.register');
+        Route::post('register', [EmployeeAuthController::class, 'register'])->name('employee.register.submit');
 
 Route::middleware([CheckEmployeeSession::class])->group(function () {
         Route::prefix('users')->group(function () {
         Route::get('all', [EmployeeAuthController::class, 'showUsers'])->name('employee.all');
-        Route::get('register', [EmployeeAuthController::class, 'showRegister'])->name('employee.register');
-        Route::post('register', [EmployeeAuthController::class, 'register'])->name('employee.register.submit');
+
 
 
 
