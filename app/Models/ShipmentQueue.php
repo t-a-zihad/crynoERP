@@ -11,6 +11,8 @@ class ShipmentQueue extends Model
     protected $fillable = [
         'order_id',
         'status',
+        'consignment_id',
+        'tracking_code',
         'handled_by',
     ];
 

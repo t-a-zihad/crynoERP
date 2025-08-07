@@ -12,6 +12,7 @@ class OrderedBook extends Model
         'book_name',
         'book_author',
         'binding_type',
+        'lamination_type',
         'special_note',
         'book_pdf',
         'custom_cover',

@@ -17,11 +17,12 @@ class CreateOrdersTable extends Migration
             $table->timestamp('order_date')->useCurrent();
             $table->enum('order_priority', ['High', 'Normal', 'Low']);
             $table->string('customer_name');
-            $table->string('phone_number')->nullable();;
+            $table->string('phone_number');
             $table->text('shipping_address');
             $table->enum('delivery_type', ['Free', 'Inside Dhaka', 'Outside Dhaka']);
             $table->decimal('delivery_charge', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);
+            $table->string('payment_method')->nullable();
             $table->text('order_note')->nullable();
             $table->unsignedBigInteger('handled_by'); // employee id, role: order manager
 

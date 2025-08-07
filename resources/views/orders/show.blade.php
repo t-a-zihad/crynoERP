@@ -83,6 +83,20 @@
                 <td>{{ $order->order_id }}</td>
             </tr>
             <tr>
+                <td class="highlighted">Courier Status & Tracking</td>
+                <td>
+                    @if($order->shipmentQueue)
+                        @if ($order->shipmentQueue->tracking_code)
+                            <a href="https://steadfast.com.bd/t/{{$order->shipmentQueue->tracking_code}}" data-toggle="tooltip" title="{{$order->detailedStatus}}" class="btn btn-sm btn-secondary" target="_blank">{{$order->shortStatus}}</a>
+                        @else
+                            N/A
+                        @endif
+                    @else
+                            N/A
+                    @endif
+                </td>
+            </tr>
+            <tr>
                 <td class="highlighted">Status</td>
                 <td><span class="btn btn-sm {{ $statusClass }}">{{ $status }}</td>
             </tr>
@@ -147,6 +161,7 @@
                 <th>Book Name</th>
                 <th>Book Author</th>
                 <th>Binding Type</th>
+                <th>Lamination Type</th>
                 <th>Special Note</th>
                 <th>Book PDF</th>
                 <th>Custom Cover</th>
@@ -245,6 +260,7 @@
                     <td>{{ $book->book_name }}</td>
                     <td>{{ $book->book_author ?? '-' }}</td>
                     <td>{{ $book->binding_type }}</td>
+                    <td>{{ $book->lamination_type }}</td>
                     <td>{{ $book->special_note ?? '-' }}</td>
                     <td>
                         @if($book->pdf_link)
@@ -304,4 +320,13 @@
         </tbody>
     </table>
 </div>
+<hr>
+@if($order->shipmentQueue)
+    @if ($order->shipmentQueue->tracking_code)
+        <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://steadfast.com.bd/t/{{$order->shipmentQueue->tracking_code}}" allowfullscreen></iframe>
+        </div>
+    @endif
+@endif
+
 @endsection

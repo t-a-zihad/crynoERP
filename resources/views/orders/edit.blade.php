@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label>Binding Type</label>
                         <select name="books[{{ $index }}][binding_type]" class="form-control @error('books.' . $index . '.binding_type') is-invalid @enderror" required>
                             <option value="Paperback" {{ (isset($book['binding_type']) && $book['binding_type'] == 'Paperback') ? 'selected' : '' }}>Paperback</option>
@@ -129,14 +129,28 @@
                             <span class="invalid-feedback d-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group col-md-4">
+
+                    <div class="form-group col-md-6">
+                        <label>Lamination Type</label>
+                        <select name="books[{{ $index }}][lamination_type]" class="form-control @error('books.' . $index . '.lamination_type') is-invalid @enderror" required>
+                            <option value="Matt" {{ (isset($book['lamination_type']) && $book['lamination_type'] == 'Matt') ? 'selected' : '' }}>Matt</option>
+                            <option value="Glossy" {{ (isset($book['lamination_type']) && $book['lamination_type'] == 'Glossy') ? 'selected' : '' }}>Glossy</option>
+                        </select>
+                        @error('books.' . $index . '.lamination_type')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
                         <label>Unit Price</label>
                         <input type="number" step="0.01" name="books[{{ $index }}][unit_price]" class="form-control @error('books.' . $index . '.unit_price') is-invalid @enderror" value="{{ $book['unit_price'] ?? '' }}" required>
                         @error('books.' . $index . '.unit_price')
                             <span class="invalid-feedback d-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label>Quantity</label>
                         <input type="number" name="books[{{ $index }}][qty]" class="form-control @error('books.' . $index . '.qty') is-invalid @enderror" value="{{ $book['qty'] ?? 1 }}" required>
                         @error('books.' . $index . '.qty')

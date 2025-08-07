@@ -7,16 +7,10 @@
     <form method="POST" action="{{ route('shipment-queues.bulk-update') }}">
         @csrf
         <input type="hidden" name="selected_ids" id="selectedIds" value="[]">
+        <Input name="bulk_status" type="hidden" value="Shipped" required></Input>
 
         <div class="d-flex justify-content-between mb-3">
-            <select name="bulk_status" class="form-control" required>
-                <option value="">Select Status</option>
-                <option value="In queue">In queue</option>
-                <option value="Shipping">Shipping</option>
-                <option value="Done">Done</option>
-                <option value="Rejected">Rejected</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Update Selected</button>
+            <button type="submit" class="btn btn-primary">Send the Selected For Courier</button>
         </div>
     </form>
 
@@ -30,6 +24,8 @@
                     <th>Shipping Address</th>
                     <th>Order Note</th>
                     <th>Status</th>
+                    <th>Courier Status & Tracking</th>
+                    <th>Consignment ID</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,30 +35,47 @@
                             'In queue' => 'status-queue',
                             'Shipping' => 'status-progress',
                             'Done' => 'status-success',
+                            'Shipped' => 'status-success',
                             'Rejected' => 'status-rejected'
                         ];
                         $statusClass = $statusColors[$queue->status] ?? 'status-queue';
+
+
                     @endphp
                     <tr>
-                        <td><input type="checkbox" class="row-checkbox" value="{{ $queue->id }}"></td>
+                        <td><input type="checkbox" class="{{$queue->status == 'Shipped' || $queue->status == 'In Progress' ? 'disabled' : 'row-checkbox'}}" value="{{$queue->id}}" {{$queue->status == 'Shipped' || $queue->status == 'In Progress' ? 'disabled' : ''}}></td>
                         <td>{{ $queue->order_id }}</td>
                         <td>{{ optional($queue->order)->customer_name ?? 'N/A' }}</td>
                         <td>{{ optional($queue->order)->phone_number ?? 'N/A' }}</td>
                         <td>{{ optional($queue->order)->shipping_address ?? 'N/A' }}</td>
                         <td>{{ optional($queue->order)->order_note ?? '-' }}</td>
                         <td>
+                            @if($queue->status == 'In queue')
                             <form action="{{ route('shipment-queues.update', $queue->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <select name="status" class="form-control {{ $statusClass }}" onchange="this.form.submit()" required>
-                                    @foreach (['In queue', 'Shipping', 'Done', 'Rejected'] as $status)
-                                        <option value="{{ $status }}" {{ $queue->status === $status ? 'selected' : '' }}>
-                                            {{ $status }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <Input name="status" type="hidden" value="Shipped"></Input>
+                                <Input type="submit" value="Send To Courier" class="btn {{$statusClass}}"></Input>
                             </form>
+                            @elseif ($queue->status == 'In Progress')
+                            <form action="{{ route('shipment-queues.update', $queue->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <Input name="status" type="hidden" value="In queue"></Input>
+                                <Input type="submit" value="Mark as In queue" data-toggle="tooltip" title="Check All The Books Have Been Packed!" class="btn {{$statusClass}}"></Input>
+                            </form>
+                            @elseif ($queue->status == 'Shipped')
+                                <button class="btn {{$statusClass}}">Sending Done</button>
+                            @endif
                         </td>
+                        <td>
+                            @if ($queue->tracking_code)
+                                <a href="https://steadfast.com.bd/t/{{$queue->tracking_code}}" data-toggle="tooltip" title="{{$queue->detailedStatus}}" class="btn btn-secondary" target="_blank">{{$queue->shortStatus}}</a>
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td>{{ $queue->consignment_id ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
             </tbody>
