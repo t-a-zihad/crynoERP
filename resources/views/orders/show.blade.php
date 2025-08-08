@@ -322,6 +322,7 @@
 </div>
 <hr>
 @if($order->shipmentQueue)
+    <h5 class="mt-5 mb-1">Ordered Book Information</h5>
     @if ($order->shipmentQueue->tracking_code)
         <div class="embed-responsive embed-responsive-16by9">
         <iframe class="embed-responsive-item" src="https://steadfast.com.bd/t/{{$order->shipmentQueue->tracking_code}}" allowfullscreen></iframe>
